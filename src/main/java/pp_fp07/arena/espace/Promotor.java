@@ -8,16 +8,16 @@ package pp_fp07.arena.espace;
  *
  * @author RyanS
  */
-public class PromotorDeEventos extends Utilizador {
+public class Promotor extends Utilizador {
     
     protected int Contacto;
 
-    public PromotorDeEventos(String NomeCompleto, String NomeDeUtilizador, String email, int Contacto, String password) {
+    public Promotor(String NomeCompleto, String NomeDeUtilizador, String email, int Contacto, String password) {
         super(NomeCompleto, NomeDeUtilizador, email, password);
         this.Contacto = Contacto;
     }
 
-    public PromotorDeEventos (String NomeDeUtilizador, String password){
+    public Promotor (String NomeDeUtilizador, String password){
         super(NomeDeUtilizador, password);
         this.password = password;
         this.NomeDeUtilizador = NomeDeUtilizador;
