@@ -26,13 +26,22 @@ public class Utilizador {
         this.email = email;
         this.password = password;
     }
-
-    public String getNomeCompleto() {
-        return NomeCompleto;
+    
+    public void imprimeDados(){
+        System.out.println("Nome: " + this.getNomeCompleto());
+        System.out.println(this.NomeDeUtilizador);
+        System.out.println(this.email);
+        System.out.println("Utilizador cadastrado com suceso");
     }
-
-    public void setNomeCompleto(String NomeCompleto) {
-        this.NomeCompleto = NomeCompleto;
+    
+    //* permitir que acessem o as variáveis por fora da classe Utilizador, porem, não permito que o valor seja alterado*//
+    public String getNomeCompleto() { //* pega o nome completo do utilizador e 
+        return NomeCompleto;  //* e retorna p'ra mim este nome     
+    }
+    
+    //* permitir que acessem as variáveis por fora da classe Utilizador e configurem/alterem NomeCompleto do Utilizador*//
+    public void setNomeCompleto(String NomeCompleto) {  //* alterar nome completo */
+        this.NomeCompleto = NomeCompleto; //* Esse nome completo recebe um novo nome completo */
     }
 
     public String getNomeDeUtilizador() {

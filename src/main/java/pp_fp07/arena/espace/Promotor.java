@@ -10,9 +10,9 @@ package pp_fp07.arena.espace;
  */
 public class Promotor extends Utilizador {
     
-    protected int Contacto;
+    protected String Contacto;
 
-    public Promotor(String NomeCompleto, String NomeDeUtilizador, String email, int Contacto, String password) {
+    public Promotor(String NomeCompleto, String NomeDeUtilizador, String email, String Contacto, String password) {
         super(NomeCompleto, NomeDeUtilizador, email, password);
         this.Contacto = Contacto;
     }
@@ -23,32 +23,15 @@ public class Promotor extends Utilizador {
         this.NomeDeUtilizador = NomeDeUtilizador;
     }
 
-    public int getContacto() {
+    public String getContacto() {
         return Contacto;
     }
 
-    public void setContacto(int Contacto) {
+    public void setContacto(String Contacto) {
+        if (Contacto.length() < 9){  /* Se o tamanho do número do telemóvel for menopr do que 9*/
+            throw new RuntimeException("telemóvel inválido"); /* Aparece uma mensagem dizendo que o telemóvel é inválido */
+        }
         this.Contacto = Contacto;
-    }
-
-    @Override
-    public String getNomeDeUtilizador() {
-        return NomeDeUtilizador;
-    }
-
-    @Override
-    public void setNomeDeUtilizador(String NomeDeUtilizador) {
-        this.NomeDeUtilizador = NomeDeUtilizador;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public void setPassword(String password) {
-        this.password = password;
     }
 
 
