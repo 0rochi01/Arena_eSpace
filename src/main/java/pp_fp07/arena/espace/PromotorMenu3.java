@@ -8,11 +8,11 @@ package pp_fp07.arena.espace;
  *
  * @author RyanS
  */
-class AdminConsola {
+public class PromotorMenu3 {
 
     public void show() {
-        System.out.println("Bem-vindo Admin!");
-        //adicionar funcionalidades a consola
+        System.out.println("Bem-vindo Promotor de Eventos!");
+        //Adicionar funcionalidades ao promotor
     }
     
 }

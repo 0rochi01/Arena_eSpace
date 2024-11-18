@@ -61,33 +61,20 @@ public class Menu_1 {
             System.out.println("Credenciais inválidas");
             menu.close();
             
-        } else{
-            System.out.println("Longin com Sucesso!!");
-            ImprimeMenuArena();
-        }
-        
         for (Utilizador utilizador : utilizadorList){
             if (utilizador.getNomeDeUtilizador().equals(NomeDeUtilizador) && utilizador.getPassword().equals(password)){
                 if (utilizador.getPrivilegio().equals("admin")){
-                    new AdminConsola().show();
+                    new AdminMenu2().executa();
                 }else{
-                    new PromotorConsola().show();
+                    new PromotorMenu3().show();
                 }
                 return;
             }
         }
         System.out.println("Credenciais Inválidas!");
     }
-    
-    private static void ImprimeMenuArena(){
-        System.out.println("|==Menu Sistema Arena-eSpace==|");
-        System.out.println("|   1. Gestão de Promotores   |");   
-        System.out.println("|   2. Gestão de Eventos      |");
-        System.out.println("|          3.  Sair           |");
-        System.out.println("|-----------------------------|");
-        System.out.println("Digite a opção:");
-    }
-    
+
+    } 
     
     private Utilizador cadastroDeUtilizador(){
         System.out.println("Digite o seu NomeCompleto: ");
