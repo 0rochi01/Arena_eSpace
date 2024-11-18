@@ -44,7 +44,7 @@ public class Menu_1 {
                     System.out.println("Opção Inválida");
                 }
 
-            opcao = mostrarMenuEDevolverOpcaoSelected(); /* Eu mostro o menu e devolvo a opção selecionada */
+            /*opcao = mostrarMenuEDevolverOpcaoSelected(); /* Eu mostro o menu e devolvo a opção selecionada */
    
         }
 
@@ -65,6 +65,18 @@ public class Menu_1 {
             System.out.println("Longin com Sucesso!!");
             ImprimeMenuArena();
         }
+        
+        for (Utilizador utilizador : utilizadorList){
+            if (utilizador.getNomeDeUtilizador().equals(NomeDeUtilizador) && utilizador.getPassword().equals(password)){
+                if (utilizador.getPrivilegio().equals("admin")){
+                    new AdminConsola().show();
+                }else{
+                    new PromotorConsola().show();
+                }
+                return;
+            }
+        }
+        System.out.println("Credenciais Inválidas!");
     }
     
     private static void ImprimeMenuArena(){
@@ -73,7 +85,7 @@ public class Menu_1 {
         System.out.println("|   2. Gestão de Eventos      |");
         System.out.println("|          3.  Sair           |");
         System.out.println("|-----------------------------|");
-        System.out.println("Digite a opção:"                );
+        System.out.println("Digite a opção:");
     }
     
     
@@ -89,8 +101,18 @@ public class Menu_1 {
             
             System.out.println("Digite a sua password: ");
             String password = menu.nextLine();
-           
-            return new Utilizador(NomeCompleto, NomeDeUtilizador, email, password);
+            
+            System.out.println("Privilegio (admin/promotor): ");
+            String Privilegio = menu.nextLine();
+            
+            if (!Privilegio.equals("admin") && !Privilegio.equals("promotor")){
+                System.out.println("Privilégio Inválido! Deve ser 'Admin' ou 'Promotor'.");
+            }
+            
+            utilizadoresCadastrados.add(new Utilizador(NomeCompleto, NomeDeUtilizador, email, password, Privilegio));
+            
+            /*return new Utilizador(NomeCompleto, NomeDeUtilizador, email, password, Privilegio);*/
+        return null;
     }
     
     private OpcaoMenu1 mostrarMenuEDevolverOpcaoSelected(){

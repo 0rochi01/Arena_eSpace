@@ -12,8 +12,8 @@ public class Promotor extends Utilizador { /* O Promotor herda da super classe U
     
     protected String Contacto; /* Mais contacto(que não tem na Classe Utilizador */
 
-    public Promotor(String NomeCompleto, String NomeDeUtilizador, String email, String Contacto, String password) {
-        super(NomeCompleto, NomeDeUtilizador, email, password);
+    public Promotor(String NomeCompleto, String NomeDeUtilizador, String email, String Contacto, String password, String Privilegio) {
+        super(NomeCompleto, NomeDeUtilizador, email, password, Privilegio);
         this.Contacto = Contacto;
     }
 

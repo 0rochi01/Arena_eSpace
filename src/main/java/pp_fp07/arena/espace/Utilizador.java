@@ -14,23 +14,26 @@ public class Utilizador {
     protected String NomeDeUtilizador;
     protected String email;
     protected String password;
+    protected String Privilegio;
 
     public Utilizador(String NomeCompleto, String NomeDeUtilizador) {
         this.NomeCompleto = NomeCompleto;
         this.NomeDeUtilizador = NomeDeUtilizador;
     }
 
-    public Utilizador(String NomeCompleto, String NomeDeUtilizador, String email, String password) {
+    public Utilizador(String NomeCompleto, String NomeDeUtilizador, String email, String password, String Privilegio) {
         this.NomeCompleto = NomeCompleto;
         this.NomeDeUtilizador = NomeDeUtilizador;
         this.email = email;
         this.password = password;
+        this.Privilegio = Privilegio;
     }
     
     public void imprimeDados(){
         System.out.println("Nome: " + this.getNomeCompleto());
         System.out.println(this.NomeDeUtilizador);
         System.out.println(this.email);
+        System.out.println(this.Privilegio);
         System.out.println("Utilizador cadastrado com suceso");
     }
     
@@ -64,8 +67,8 @@ public class Utilizador {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getPrivilegio(){
+        return Privilegio;
     }
 
     
