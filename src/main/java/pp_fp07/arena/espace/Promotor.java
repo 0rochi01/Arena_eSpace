@@ -8,9 +8,9 @@ package pp_fp07.arena.espace;
  *
  * @author RyanS
  */
-public class Promotor extends Utilizador {
+public class Promotor extends Utilizador { /* O Promotor herda da super classe Utilizador todas a caracteres */
     
-    protected String Contacto;
+    protected String Contacto; /* Mais contacto(que não tem na Classe Utilizador */
 
     public Promotor(String NomeCompleto, String NomeDeUtilizador, String email, String Contacto, String password) {
         super(NomeCompleto, NomeDeUtilizador, email, password);
