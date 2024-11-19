@@ -34,8 +34,9 @@ public class PromotorMenu3 {
     
     
     
-    private void vizualizarEventos
-    // Método para criação de eventos 
+    
+            
+            
     private void criarEventos(){
         boolean aaa=true;
         while(aaa){ // loop para permitir a criação de eventos
@@ -72,7 +73,7 @@ public class PromotorMenu3 {
             
             String contacto = promotorLogado.getEmail(); // pega o contato(email) do promotor logado no sistema
             
-            Eventos evento = new Eventos(Titulo, DataHora, Sala, promotorLogado);
+            Eventos evento = new Eventos(Titulo, DataHora, Sala, promotorLogado, condicoesDeInscricao, modalidade, numeroMaximoDeParticipantes);
             EventosCriados.add(evento); //adiciona evento à lista
             
             System.out.println("Evento criado com sucesso:");
@@ -91,6 +92,19 @@ public class PromotorMenu3 {
        
     }
     
+    private static void vizualizarReservas{
+        if (EventosCriados == null || EventosCriados.isEmpty()){
+            System.out.println("Não existe reservas cadastradas");
+        } else {
+            for (Eventos evento : EventosCriados){
+                 
+            }
+           Eventos evento = EventosCriados.get(0);
+        }
+
+    }
+    // Método para criação de eventos
+    
     private static void imprimeMenuPromotor(){
         System.out.print("|==   Sistema Arena-eSpace  ==|\n");
         System.out.print("|       1. Gerir Eventos      |\n");   
@@ -108,6 +122,11 @@ public class PromotorMenu3 {
         System.out.print("|          0.  Sair           |\n");
         System.out.print("|-----------------------------|\n");
         System.out.print("Digite a opção:");
+    }
+   
+    public static void imprimirEventosPorPromotor{
+        System.out.println(Eventos.toString());
+    
     }
     
 }
