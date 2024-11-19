@@ -34,11 +34,11 @@ public class PromotorMenu3 {
     
     
     
-    
+    private void vizualizarEventos
     // Método para criação de eventos 
     private void criarEventos(){
-        
-        while(true){ // loop para permitir a criação de eventos
+        boolean aaa=true;
+        while(aaa){ // loop para permitir a criação de eventos
             System.out.println("Digite título do Evento (ou 'sair' para encerrar):"); 
             String Titulo = menu3.nextLine(); // o utilizador insere o título e o sistema lê a próxima linha
         
@@ -60,6 +60,15 @@ public class PromotorMenu3 {
             
             System.out.println("Digite a Sala do Evento");
             String Sala = menu3.nextLine(); // O utilizador insere a sala
+            
+            System.out.println("Escolha a modalidade do seu Evento");
+            String modalidade = menu3.nextLine();
+            
+            System.out.println("Digite um numero máximo de participantes:");
+            int numeroMaximoDeParticipantes = menu3.nextInt();
+            
+            System.out.println("Digite as condições para participarem do Evento");
+            String condicoesInscricao = menu3.nextLine();
             
             String contacto = promotorLogado.getEmail(); // pega o contato(email) do promotor logado no sistema
             

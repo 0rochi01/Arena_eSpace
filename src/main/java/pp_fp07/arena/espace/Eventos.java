@@ -16,7 +16,9 @@ public class Eventos {
     private LocalDateTime DataHora; /*Data e Hora do evento*/
     private String Sala; /*Sala onde será realizado o evento*/
     private final Promotor Promotor; /*Promotor(do tipo Promotor) responsável pelo evento*/
-
+    private String modalidade;
+    private int numeroMaximoDeParticipantes;
+    
     /*Construtor para criar um evento*/
     public Eventos(String Titulo, LocalDateTime DataHora, String Sala, Promotor Promotor) {
         this.Titulo = Titulo; /*O construtor recebe o título do evento*/

@@ -66,9 +66,9 @@ public class Menu_1 {
                 System.out.println("Login realizado com sucesso!");
                 
                 if (utilizador.getPrivilegio().equals("admin")){
-                    new AdminMenu2().executa(); // chama o menu do admin
+                    new AdminMenu2().executa() ; // chama o menu do admin
                 }else{
-                    new PromotorMenu3().show(); // chama o menu do promotor
+                    new menu3().show() ; // chama o menu do promotor
                 }
                 return;
             }
