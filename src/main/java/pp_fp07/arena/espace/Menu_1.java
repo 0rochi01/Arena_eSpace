@@ -7,22 +7,21 @@ package pp_fp07.arena.espace;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 /**
  *
  * @author RyanS
  */
 public class Menu_1 {
     
-    
-    private final Scanner menu;
-    private final List<Utilizador> utilizadoresCadastrados = new ArrayList<>();  /* Eu crio uma lista de Utilizadores */
-
     public Menu_1(Scanner menu) {
         this.menu = menu;
     }
     
+    private final Scanner menu;
+    private final List<Utilizador> utilizadoresCadastrados = new ArrayList<>();  /* Eu crio uma lista de UtilizadoresCadastrados */
+    private static Utilizador promotorLogado;
     
+   
     public void executa(){
         OpcaoMenu1 opcao = mostrarMenuEDevolverOpcaoSelected();  /* Eu mostro o menu e devolvo a opção selecionada */
         
@@ -50,7 +49,7 @@ public class Menu_1 {
 
       }
     
-    private static void loginDoUtilizador(Scanner menu, List<Utilizador> utilizadorList) {
+    private static void loginDoUtilizador(Scanner menu, List<Utilizador> utilizadorList) { /*Método estático que não retorna nada, criado para login do utilizador, a classe não precisa ser instanciada para chamar este método */
         System.out.println("Nome de Utilizador: ");
         String NomeDeUtilizador = menu.nextLine();
         
@@ -63,10 +62,13 @@ public class Menu_1 {
             
         for (Utilizador utilizador : utilizadorList){
             if (utilizador.getNomeDeUtilizador().equals(NomeDeUtilizador) && utilizador.getPassword().equals(password)){
+                promotorLogado = utilizador; // Armazena o promotor logado
+                System.out.println("Login realizado com sucesso!");
+                
                 if (utilizador.getPrivilegio().equals("admin")){
-                    new AdminMenu2().executa();
+                    new AdminMenu2().executa(); // chama o menu do admin
                 }else{
-                    new PromotorMenu3().show();
+                    new PromotorMenu3().show(); // chama o menu do promotor
                 }
                 return;
             }
@@ -76,7 +78,7 @@ public class Menu_1 {
 
     } 
     
-    private Utilizador cadastroDeUtilizador(){
+    private Utilizador cadastroDeUtilizador(){ /*Método criado para cadstrar utilizador, que só pode ser acessado pela própria classe e pelo pacote*/
         System.out.println("Digite o seu NomeCompleto: ");
             String NomeCompleto = menu.nextLine();
             
@@ -102,14 +104,14 @@ public class Menu_1 {
         return null;
     }
     
-    private OpcaoMenu1 mostrarMenuEDevolverOpcaoSelected(){
+    private OpcaoMenu1 mostrarMenuEDevolverOpcaoSelected(){ /*Método criado para mostrar o menu e devolver a opção selecionada, privado e só pode ser acessado pela própria classe*/
         imprimeMenuPrincipal();
         int opcao = menu.nextInt();
         menu.nextLine();
         return OpcaoMenu1.getFromCodigo(opcao);
     }
     
-    private static void imprimeMenuPrincipal() {
+    private static void imprimeMenuPrincipal() { /*Método estático que não retorna nada, criado para o sistema imprimir o menu principal, a classe não precisa ser instanciada para chamar este método*/
         System.out.print("|==   Sistema Arena-eSpace  ==|\n");
         System.out.print("|          1. login           |\n");   
         System.out.print("|          2. Registo         |\n");

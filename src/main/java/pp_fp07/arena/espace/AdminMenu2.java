@@ -12,12 +12,14 @@ import java.time.LocalDateTime;
  * @author RyanS
  */
 public class AdminMenu2 {
-    
-    private final Scanner menu;
-    
-    public AdminMenu2(Scanner menu) {
-        this.menu = menu;
+
+    public AdminMenu2(Scanner menu2) {
+        this.menu2 = menu2;
     }
+    
+    private final Scanner menu2;
+    
+    
     
 
     
@@ -30,15 +32,13 @@ public class AdminMenu2 {
         
     }
     
-    private static void AdicionarEventos()
-        System.out.println("Digite o seu NomeCompleto: ");
-            String NomeCompleto = menu2.nextLine();
+    private static void 
             
             
     private OpcaoMenu2 mostrarMenuEDevolverOpcaoSelected(){
         imprimeMenuAdmin();
-        int opcao = menu.nextInt();
-        menu.nextLine();
+        int opcao = menu2.nextInt();
+        menu2.nextLine();
         return OpcaoMenu2.getFromCodigo(opcao);
     }
     

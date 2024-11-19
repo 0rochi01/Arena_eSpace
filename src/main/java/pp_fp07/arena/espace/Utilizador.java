@@ -16,10 +16,6 @@ public class Utilizador {
     protected String password;
     protected String Privilegio;
 
-    public Utilizador(String NomeCompleto, String NomeDeUtilizador) {
-        this.NomeCompleto = NomeCompleto;
-        this.NomeDeUtilizador = NomeDeUtilizador;
-    }
 
     public Utilizador(String NomeCompleto, String NomeDeUtilizador, String email, String password, String Privilegio) {
         this.NomeCompleto = NomeCompleto;
