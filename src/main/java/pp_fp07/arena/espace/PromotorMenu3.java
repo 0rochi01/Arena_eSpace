@@ -43,13 +43,9 @@ public class PromotorMenu3 {
             System.out.println("Digite título do Evento (ou 'sair' para encerrar):"); 
             String Titulo = menu3.nextLine(); // o utilizador insere o título e o sistema lê a próxima linha
         
-            if(Titulo.equalsIgnoreCase("sair")){ // Se o utilizador digitar "sair" (ou qualquer variação em maiúsculas/minúsculas), o programa informará que o usuário escolheu sair. Caso contrário, ele exibirá o título digitado.
-                System.out.print("Até Logo!!"); // O sistema envia mensagem de Despedida
-                break; // E encerra o loop 
-            }
             
             
-            System.out.println("Digite a Data e a Hora do seu evento (dd/MM/yyyy HH:MM)");
+            System.out.println("Digite a Data e a Hora do seu evento (dd/MM/yyyy HH:mm)");
             String DataHoraInput = menu3.nextLine(); // O utilizador insere data e hora
            
             if (!DataHoraInput.matches("\\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}")){ // Verificação do formato da data e hora
@@ -67,13 +63,14 @@ public class PromotorMenu3 {
             
             System.out.println("Digite um numero máximo de participantes:");
             int numeroMaximoDeParticipantes = menu3.nextInt();
+            menu3.nextLine(); // consome a nova linha
             
             System.out.println("Digite as condições para participarem do Evento");
             String condicoesInscricao = menu3.nextLine();
             
             String contacto = promotorLogado.getEmail(); // pega o contato(email) do promotor logado no sistema
             
-            Eventos evento = new Eventos(Titulo, DataHora, Sala, promotorLogado, condicoesDeInscricao, modalidade, numeroMaximoDeParticipantes);
+            Eventos evento = new Eventos(Titulo, DataHora, Sala, promotorLogado, condicoesInscricao, modalidade, numeroMaximoDeParticipantes);
             EventosCriados.add(evento); //adiciona evento à lista
             
             System.out.println("Evento criado com sucesso:");
@@ -92,18 +89,17 @@ public class PromotorMenu3 {
        
     }
     
-    private static void vizualizarReservas{
-        if (EventosCriados == null || EventosCriados.isEmpty()){
+    private void vizualizarReservas(){
+        if (EventosCriados.isEmpty()){
             System.out.println("Não existe reservas cadastradas");
         } else {
             for (Eventos evento : EventosCriados){
-                 
+                System.out.println(evento.toString()); // Exibe detalhes do evento 
             }
-           Eventos evento = EventosCriados.get(0);
+           
         }
-
     }
-    // Método para criação de eventos
+    
     
     private static void imprimeMenuPromotor(){
         System.out.print("|==   Sistema Arena-eSpace  ==|\n");
@@ -114,7 +110,7 @@ public class PromotorMenu3 {
         System.out.print("Digite a opção:");
     }
     
-    private static void imprimeMenuGerirEVentos(){
+    private static void imprimeMenuGerirEventos(){
         System.out.print("|==   Sistema Arena-eSpace  ==|\n");
         System.out.print("|    3. Vizualizar Reservas   |\n");   
         System.out.print("|    4. Editar Reservas       |\n");
@@ -124,9 +120,8 @@ public class PromotorMenu3 {
         System.out.print("Digite a opção:");
     }
    
-    public static void imprimirEventosPorPromotor{
-        System.out.println(Eventos.toString());
-    
-    }
     
 }
+    
+
+

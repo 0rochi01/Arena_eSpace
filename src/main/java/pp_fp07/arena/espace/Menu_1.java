@@ -19,7 +19,7 @@ public class Menu_1 {
     
     private final Scanner menu;
     private final List<Utilizador> utilizadoresCadastrados = new ArrayList<>();  /* Eu crio uma lista de UtilizadoresCadastrados */
-    private static Utilizador promotorLogado  = null;
+    protected static Utilizador promotorLogado;
     
    
     public void executa(){
