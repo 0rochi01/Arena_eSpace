@@ -79,7 +79,7 @@ public class PromotorMenu3 {
             System.out.println(evento.toString()); // Chama o to String da classe Evento
             
             // Pergunta se o utilizador quer criar outro evento
-            System.out.println("Deseja criar outro eventi) (s/n)");
+            System.out.println("Deseja criar outro evento?) (s/n)");
             String resposta = menu3.nextLine();
             
             if (resposta.equalsIgnoreCase("n")){
