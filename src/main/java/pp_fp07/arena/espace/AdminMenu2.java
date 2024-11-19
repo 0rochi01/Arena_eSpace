@@ -32,7 +32,7 @@ public class AdminMenu2 {
         
     }
     
-    private static void 
+ 
             
             
     private OpcaoMenu2 mostrarMenuEDevolverOpcaoSelected(){
@@ -46,7 +46,7 @@ public class AdminMenu2 {
         System.out.print("|==   Sistema Arena-eSpace  ==|\n");
         System.out.print("|   1. Gestão de Promotores   |\n");   
         System.out.print("|    2. Gestão de Eventos     |\n");
-        System.out.print("|          3.  Sair           |\n");
+        System.out.print("|          0.  Sair           |\n");
         System.out.print("|-----------------------------|\n");
         System.out.print("Digite a opção:");
     }

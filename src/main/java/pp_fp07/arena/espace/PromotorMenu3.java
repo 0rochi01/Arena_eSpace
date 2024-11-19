@@ -91,4 +91,23 @@ public class PromotorMenu3 {
        
     }
     
+    private static void imprimeMenuPromotor(){
+        System.out.print("|==   Sistema Arena-eSpace  ==|\n");
+        System.out.print("|       1. Gerir Eventos      |\n");   
+        System.out.print("|       2. Criar Eventos      |\n");
+        System.out.print("|          0.  Sair           |\n");
+        System.out.print("|-----------------------------|\n");
+        System.out.print("Digite a opção:");
+    }
+    
+    private static void imprimeMenuGerirEVentos(){
+        System.out.print("|==   Sistema Arena-eSpace  ==|\n");
+        System.out.print("|    1. Vizualizar Reservas   |\n");   
+        System.out.print("|    2. Editar Reservas       |\n");
+        System.out.print("|    3.  Remover Eventos      |\n");
+        System.out.print("|          0.  Sair           |\n");
+        System.out.print("|-----------------------------|\n");
+        System.out.print("Digite a opção:");
+    }
+    
 }

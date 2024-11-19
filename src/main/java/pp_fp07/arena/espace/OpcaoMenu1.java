@@ -14,7 +14,7 @@ public enum OpcaoMenu1 {
     
     REGISTO(2),
     
-    SAIR(3);
+    SAIR(0);
     
     
     private final int codigoMenu1;
