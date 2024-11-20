@@ -33,7 +33,16 @@ public class AdminMenu2 {
     }
     
  
-            
+    private void vizualizarReservas(){
+        if (EventosCriados.isEmpty()){
+            System.out.println("Não existe reservas efetuada");
+        } else {
+            for (Eventos evento : EventosCriados){
+                System.out.println(evento.toString()); // Exibe detalhes do evento 
+            }
+           
+        }
+    }        
             
     private OpcaoMenu2 mostrarMenuEDevolverOpcaoSelected(){
         imprimeMenuAdmin();
