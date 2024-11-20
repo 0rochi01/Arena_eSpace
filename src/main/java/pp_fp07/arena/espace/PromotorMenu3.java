@@ -100,6 +100,69 @@ public class PromotorMenu3 {
         }
     }
     
+    private void editarReservas() {
+    if (EventosCriados.isEmpty()) {
+        System.out.println("Não existem eventos cadastrados para editar.");
+        return;
+    }
+
+    // Exibir eventos existentes
+    System.out.println("Eventos cadastrados:");
+    for (int i = 0; i < EventosCriados.size(); i++) {
+        Eventos evento = EventosCriados.get(i);
+        System.out.println((i + 1) + ". " + evento.toString());
+    }
+
+    // Solicitar ao usuário para escolher um evento para editar
+    System.out.println("Digite o número do evento que deseja editar:");
+    int eventoIndex = menu3.nextInt() - 1; // Ajusta para índice zero
+    menu3.nextLine(); // Consumir a nova linha
+
+    if (eventoIndex < 0 || eventoIndex >= EventosCriados.size()) {
+        System.out.println("Número de evento inválido. Tente novamente.");
+        return;
+    }
+
+    Eventos eventoSelecionado = EventosCriados.get(eventoIndex);
+
+    // Editar título
+    System.out.println("Título atual: " + eventoSelecionado.getTitulo());
+    System.out.println("Digite o novo título (ou pressione Enter para manter o atual):");
+    String novoTitulo = menu3.nextLine();
+    if (!novoTitulo.isEmpty()) {
+        eventoSelecionado.setTitulo(novoTitulo);
+    }
+
+    // Editar data e hora
+    System.out.println("Data e Hora atual: " + eventoSelecionado.getDataHora().format(formatter));
+    System.out.println("Digite a nova data e hora (dd/MM/yyyy HH:mm) ou pressione Enter para manter a atual:");
+    String novaDataHoraInput = menu3.nextLine();
+    if (!novaDataHoraInput.isEmpty()) {
+        if (!novaDataHoraInput.matches("\\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}")) {
+            System.out.println("Formato de data e hora inválido. Tente novamente.");
+        } else {
+            try {
+                LocalDateTime novaDataHora = LocalDateTime.parse(novaDataHoraInput, formatter);
+                eventoSelecionado.setDataHora(novaDataHora);
+            } catch (Exception e) {
+                System.out.println("Erro ao processar a nova data e hora. Tente novamente.");
+            }
+        }
+    }
+
+    // Editar sala
+    System.out.println("Sala atual: " + eventoSelecionado.getSala());
+    System.out.println("Digite a nova sala (ou pressione Enter para manter a atual):");
+    String novaSala = menu3.nextLine();
+    if (!novaSala.isEmpty()) {
+        eventoSelecionado.setSala(novaSala);
+    }
+
+    // Exibir mensagem de sucesso
+    System.out.println("Evento editado com sucesso:");
+    System.out.println(eventoSelecionado.toString());
+    
+    }
     
     private static void imprimeMenuPromotor(){
         System.out.print("|==   Sistema Arena-eSpace  ==|\n");
@@ -109,6 +172,8 @@ public class PromotorMenu3 {
         System.out.print("|-----------------------------|\n");
         System.out.print("Digite a opção:");
     }
+    
+    
     
     private static void imprimeMenuGerirEventos(){
         System.out.print("|==   Sistema Arena-eSpace  ==|\n");
