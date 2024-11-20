@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import static pp_fp07.arena.espace.Menu_1.promotorLogado;
 
 /**
  *
@@ -41,22 +42,22 @@ public class PromotorMenu3 {
         boolean aaa=true;
         while(aaa){ // loop para permitir a criação de eventos
             System.out.println("Digite título do Evento (ou 'sair' para encerrar):"); 
-            String Titulo = menu3.nextLine(); // o utilizador insere o título e o sistema lê a próxima linha
+            String titulo = menu3.nextLine(); // o utilizador insere o título e o sistema lê a próxima linha
         
             
             
             System.out.println("Digite a Data e a Hora do seu evento (dd/MM/yyyy HH:mm)");
-            String DataHoraInput = menu3.nextLine(); // O utilizador insere data e hora
+            String dataHoraInput = menu3.nextLine(); // O utilizador insere data e hora
            
-            if (!DataHoraInput.matches("\\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}")){ // Verificação do formato da data e hora
+            if (!dataHoraInput.matches("\\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}")){ // Verificação do formato da data e hora
                 System.out.println("Formato de data e hora inválido. Tente novamente.");
                 continue; // // Retorna ao início do loop se a entrada for inválida 
             }
             
-            LocalDateTime DataHora = LocalDateTime.parse(DataHoraInput, formatter); // Converte a entrada para LocalDateTime
+            LocalDateTime dataHora = LocalDateTime.parse(dataHoraInput, formatter); // Converte a entrada para LocalDateTime
             
             System.out.println("Digite a Sala do Evento");
-            String Sala = menu3.nextLine(); // O utilizador insere a sala
+            String sala = menu3.nextLine(); // O utilizador insere a sala
             
             System.out.println("Escolha a modalidade do seu Evento");
             String modalidade = menu3.nextLine();
@@ -68,9 +69,9 @@ public class PromotorMenu3 {
             System.out.println("Digite as condições para participarem do Evento");
             String condicoesInscricao = menu3.nextLine();
             
-            String contacto = promotorLogado.getEmail(); // pega o contato(email) do promotor logado no sistema
+            // pega o contato(email) do promotor logado no sistema
             
-            Eventos evento = new Eventos(Titulo, DataHora, Sala, promotorLogado, condicoesInscricao, modalidade, numeroMaximoDeParticipantes);
+            Eventos evento = new Eventos(titulo, dataHora, sala, promotorLogado.getNomeCompleto(), promotorLogado.getEmail(), condicoesInscricao, modalidade, numeroMaximoDeParticipantes);
             EventosCriados.add(evento); //adiciona evento à lista
             
             System.out.println("Evento criado com sucesso:");
@@ -164,6 +165,53 @@ public class PromotorMenu3 {
     
     }
     
+    private void apagarEvento() {
+    if (EventosCriados.isEmpty()) {
+        System.out.println("Não existem eventos criados.");
+        return;
+    }
+
+    // Exibe a lista de eventos
+    System.out.println("Eventos criados:");
+    for (int i = 0; i < EventosCriados.size(); i++) {
+        System.out.println((i + 1) + ". " + EventosCriados.get(i).getTitulo());
+    }
+
+    // Solicita ao utilizador que selecione um evento
+    System.out.println("Digite o número do evento que deseja visualizar ou apagar (ou 0 para voltar):");
+    int escolha = menu3.nextInt();
+    menu3.nextLine(); // Consumir o caracter de nova linha
+
+    if (escolha == 0) {
+        return; // Voltar ao menu anterior
+    }
+
+    // Verifica se a escolha é válida
+    if (escolha < 0 || escolha > EventosCriados.size()) {
+        System.out.println("Opção inválida.");
+        return;
+    }
+
+    // Obter o evento selecionado
+    Eventos eventoSelecionado = EventosCriados.get(escolha - 1);
+
+    // Exibe os detalhes do evento
+    System.out.println("\nDetalhes do evento:");
+    System.out.println(eventoSelecionado.toString());
+
+    // Solicita ao utilizador se deseja apagar o evento
+    System.out.println("Deseja apagar este evento? (s/n)");
+    String resposta = menu3.nextLine();
+
+    // Apaga o evento se a resposta for "s"
+    if (resposta.equalsIgnoreCase("s")) {
+        EventosCriados.remove(eventoSelecionado);
+        System.out.println("Evento apagado com sucesso!");
+    } else {
+        System.out.println("Operação cancelada.");
+    }
+}
+    
     private static void imprimeMenuPromotor(){
         System.out.print("|==   Sistema Arena-eSpace  ==|\n");
         System.out.print("|       1. Gerir Eventos      |\n");   
@@ -183,6 +231,30 @@ public class PromotorMenu3 {
         System.out.print("|          0.  Sair           |\n");
         System.out.print("|-----------------------------|\n");
         System.out.print("Digite a opção:");
+    }
+    
+    public enum Resposta {
+        SIM("s"),
+        NAO("n");
+
+        private final String valor;
+
+        Resposta(String valor) {
+            this.valor = valor;
+        }
+
+        public String getValor() {
+            return valor;
+        }
+
+        public static Resposta fromString(String valor) {
+            for (Resposta resposta : Resposta.values()) {
+                if (resposta.getValor().equalsIgnoreCase(valor)) {
+                    return resposta;
+                }
+            }
+            return null; // Retorna null se não encontrar uma resposta válida
+        }
     }
    
     

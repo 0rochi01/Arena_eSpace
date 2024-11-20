@@ -15,21 +15,25 @@ public class Eventos {
     protected String titulo; /*Título do Evento*/
     protected LocalDateTime dataHora; /*Data e Hora do evento*/
     protected String sala; /*Sala onde será realizado o evento*/
-    protected final Promotor Promotor; /*Promotor(do tipo Promotor) responsável pelo evento*/
+    //protected final Promotor Promotor; /*Promotor(do tipo Promotor) responsável pelo evento*/
     protected String modalidade;
     protected int numeroMaximoDeParticipantes;
     protected String condicoesDeInscricao;
     
     /*Construtor para criar um evento*/
-    public Eventos(String titulo, LocalDateTime dataHora, String sala, Promotor Promotor, String condicoesDeInscricao, int numeroMaximoDeParticipantes, String modalidade) {
+    public Eventos(String titulo, LocalDateTime dataHora, String sala, String condicoesDeInscricao, String modalidade, int numeroMaximoDeParticipantes) {
         
         this.titulo = titulo; /*O construtor recebe o título do evento*/
         this.dataHora = dataHora; /*O construtor recebe a data e hora do evento*/
         this.sala = sala; /*O construtor recebe a sala do evento*/
-        this.Promotor = Promotor; /*O construtor recebe o Promotor do evento*/
+        //this.Promotor = Promotor; /*O construtor recebe o Promotor do evento*/
         this.condicoesDeInscricao = condicoesDeInscricao;
         this.modalidade = modalidade;
         this.numeroMaximoDeParticipantes = numeroMaximoDeParticipantes;
+        
+    }
+
+    Eventos(String titulo, LocalDateTime dataHora, String sala, String nomeCompleto, String email, String condicoesInscricao, String modalidade, int numeroMaximoDeParticipantes) {
         
     }
 
@@ -58,9 +62,9 @@ public class Eventos {
     }
 
     
-    public Promotor getPromotor() { /*Método para acessar o Promotor do evento*/
-        return Promotor;
-    }
+    //public Promotor getPromotor() { /*Método para acessar o Promotor do evento*/
+      //  return Promotor;
+    //}
 
     public String getModalidade() {
         return modalidade;
@@ -94,8 +98,8 @@ public class Eventos {
                 "Sala :" + sala + "\n" +
                 "Modalidade :" + modalidade + "\n" +
                 "Número máximo de participantes :" + numeroMaximoDeParticipantes + "\n" +
-                "Condições de Inscrição :" + condicoesDeInscricao + "\n" +
-                "-" + Promotor.toString(); /*Chama a representação legível(toString) do Promotor*/
+                "Condições de Inscrição :" + condicoesDeInscricao + "\n";// +
+               // "-" + Promotor.toString(); /*Chama a representação legível(toString) do Promotor*/
     }
     
     

@@ -17,9 +17,10 @@ public class Menu_1 {
         this.menu = menu;
     }
     
+    public static Promotor promotorLogado; 
     private final Scanner menu;
     private final List<Utilizador> utilizadoresCadastrados = new ArrayList<>();  /* Eu crio uma lista de UtilizadoresCadastrados */
-    protected static Utilizador promotorLogado;
+    
     
    
     public void executa(){
@@ -49,34 +50,41 @@ public class Menu_1 {
 
       }
     
-    private static void loginDoUtilizador(Scanner menu, List<Utilizador> utilizadorList) { /*Método estático que não retorna nada, criado para login do utilizador, a classe não precisa ser instanciada para chamar este método */
-        System.out.println("Nome de Utilizador: ");
-        String NomeDeUtilizador = menu.nextLine();
-        
-        System.out.println("Password: ");
-        String password = menu.nextLine();
-        
-        if (utilizadorList.isEmpty()){
-            System.out.println("Credenciais inválidas");
-            menu.close();
-            
-        for (Utilizador utilizador : utilizadorList){
-            if (utilizador.getNomeDeUtilizador().equals(NomeDeUtilizador) && utilizador.getPassword().equals(password)){
-                promotorLogado = utilizador; // Armazena o promotor logado
-                System.out.println("Login realizado com sucesso!");
-                
-                if (utilizador.getPrivilegio().equals("admin")){
-                    new AdminMenu2().executa() ; // chama o menu do admin
-                }else{
-                    new menu3().show() ; // chama o menu do promotor
-                }
-                return;
-            }
-        }
-        System.out.println("Credenciais Inválidas!");
+    private static void loginDoUtilizador(Scanner menu, List<Utilizador> utilizadorList) {
+    // Método estático que não retorna nada, criado para login do utilizador
+    System.out.println("Nome de Utilizador: ");
+    String nomeDeUtilizador = menu.nextLine();
+    
+    System.out.println("Password: ");
+    String password = menu.nextLine();
+
+    // Verifica se a lista de utilizadores está vazia
+    if (utilizadorList.isEmpty()) {
+        System.out.println("Não existem utilizadores cadastrados.");
+        return; // Retorna para evitar continuar o processo de login
     }
 
-    } 
+    // Itera sobre a lista de utilizadores
+    for (Utilizador utilizador : utilizadorList) {
+        if (utilizador.getNomeDeUtilizador().equals(nomeDeUtilizador) && utilizador.getPassword().equals(password)) {
+            // Se o utilizador for um Promotor
+            Promotor promotorLogado = (Promotor) utilizador; // Faz o cast para Promotor
+            System.out.println("Login realizado com sucesso!");
+
+                if (utilizador.getPrivilegio().equals("admin")) {
+                    new AdminMenu2().executa(); // chama o menu do admin
+                } else {
+                    new Menu3().show(); // chama o menu do promotor
+                }
+                return; // Sai do método após login bem-sucedido
+            
+        } else {
+                System.out.println("O utilizador não é um promotor.");
+                return; // Sai do método se não for um promotor
+            }
+    }
+    System.out.println("Credenciais Inválidas!");
+} 
     
     private Utilizador cadastroDeUtilizador(){ /*Método criado para cadstrar utilizador, que só pode ser acessado pela própria classe e pelo pacote*/
         System.out.println("Digite o seu NomeCompleto: ");
