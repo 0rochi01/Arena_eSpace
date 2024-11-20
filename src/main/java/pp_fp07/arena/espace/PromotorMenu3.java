@@ -21,6 +21,7 @@ public class PromotorMenu3 {
         this.menu3 = menu3;
     }
     
+    
     private final Scanner menu3;
     private final List<Eventos> EventosCriados = new ArrayList<>();
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -64,7 +65,7 @@ public class PromotorMenu3 {
                     System.out.println("Opção Inválida");
                 }
 
-            /*opcao = mostrarMenuEDevolverOpcaoSelected(); /* Eu mostro o menu e devolvo a opção selecionada */
+            opcao = mostrarMenuEDevolverOpcaoSelecionada(); /* Eu mostro o menu e devolvo a opção selecionada */
    
         }
     }
