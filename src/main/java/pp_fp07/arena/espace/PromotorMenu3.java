@@ -60,7 +60,7 @@ public class PromotorMenu3 {
                     break;
                 case OpcaoMenu3.SAIR:
                     System.out.print("\nAté Logo!!"); /* O sistema envia uma mensagem de despedida */
-                    menu.execute(); /* E fecha o menu, encerrando atividade */
+                    menu3.close(); /* E fecha o menu, encerrando atividade */
                 default:
                     System.out.println("Opção Inválida");
                 }
@@ -129,7 +129,7 @@ public class PromotorMenu3 {
     
     private void vizualizarReservas(){
         if (EventosCriados.isEmpty()){
-            System.out.println("Não existe reservas efetuada");
+            System.out.println("Não existe reservas cadastradas");
         } else {
             for (Eventos evento : EventosCriados){
                 System.out.println(evento.toString()); // Exibe detalhes do evento 
