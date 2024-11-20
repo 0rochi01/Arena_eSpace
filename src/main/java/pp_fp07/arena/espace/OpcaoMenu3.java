@@ -19,16 +19,18 @@ public enum OpcaoMenu3 {
     
     REMOVEREVENTOS(5),
     
+    MenuAnterior(6),
+    
     SAIR(0);
     
     
-    private final int OpcaoMenu3;
+    private final int codigoMenu3;
     
-    OpcaoMenu1(int codigoOpcaoMenu3){
-        this.codigoOpcaoMenu3 = codigoOpcaoMenu3;
+    OpcaoMenu3(int codigoMenu3){
+        this.codigoMenu3 = codigoMenu3;
     }
     
-    public static OpcaoMenu1 getFromCodigo(int codigoMenu){
+    public static OpcaoMenu3 getFromCodigo(int codigoMenu){
         OpcaoMenu3[] todasAsOpcoes = OpcaoMenu3.values();
         for (OpcaoMenu3 opcao : todasAsOpcoes){
             if (opcao.codigoMenu3 == codigoMenu){

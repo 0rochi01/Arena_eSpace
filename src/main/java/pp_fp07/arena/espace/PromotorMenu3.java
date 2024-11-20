@@ -16,7 +16,7 @@ import static pp_fp07.arena.espace.Menu_1.promotorLogado;
  * @author RyanS
  */
 public class PromotorMenu3 {
-
+       
     public PromotorMenu3(Scanner menu3) {
         this.menu3 = menu3;
     }
@@ -28,9 +28,45 @@ public class PromotorMenu3 {
     
     
     
-    public void MenuPromotor() {
+    public void executa3() {
         System.out.println("Bem-vindo Promotor de Eventos!");
-        //Adicionar funcionalidades ao promotor
+        
+        OpcaoMenu3 opcao = mostrarMenuEDevolverOpcaoSelecionada();
+        
+        while (opcao != OpcaoMenu3.SAIR){  
+            switch (opcao){
+                case OpcaoMenu3.GERIREVENTOS:
+                    imprimeMenuGerirEventos();
+                    break;
+                case OpcaoMenu3.CRIAREVENTOS:
+                    criarEventos();
+                    imprimeMenuPromotor();
+                    break;
+                case OpcaoMenu3.VIZUALIZARRESERVAS:
+                    vizualizarReservas();
+                    imprimeMenuGerirEventos();
+                    break;
+                case OpcaoMenu3.EDITARRESERVAS:
+                    editarReservas();
+                    imprimeMenuGerirEventos();
+                    break;
+                case OpcaoMenu3.REMOVEREVENTOS:
+                    removerEvento();
+                    imprimeMenuGerirEventos();
+                    break;
+                case OpcaoMenu3.MenuAnterior:
+                    imprimeMenuPromotor();
+                    break;
+                case OpcaoMenu3.SAIR:
+                    System.out.print("\nAté Logo!!"); /* O sistema envia uma mensagem de despedida */
+                    menu3.close(); /* E fecha o menu, encerrando atividade */
+                default:
+                    System.out.println("Opção Inválida");
+                }
+
+            /*opcao = mostrarMenuEDevolverOpcaoSelected(); /* Eu mostro o menu e devolvo a opção selecionada */
+   
+        }
     }
     
     
@@ -162,10 +198,10 @@ public class PromotorMenu3 {
     // Exibir mensagem de sucesso
     System.out.println("Evento editado com sucesso:");
     System.out.println(eventoSelecionado.toString());
-    
+    imprimeMenuGerirEventos();
     }
     
-    private void apagarEvento() {
+    private void removerEvento() {
     if (EventosCriados.isEmpty()) {
         System.out.println("Não existem eventos criados.");
         return;
@@ -201,15 +237,32 @@ public class PromotorMenu3 {
 
     // Solicita ao utilizador se deseja apagar o evento
     System.out.println("Deseja apagar este evento? (s/n)");
-    String resposta = menu3.nextLine();
+    String respostaSN = menu3.nextLine();
+    Resposta resposta = Resposta.fromString(respostaSN);
 
-    // Apaga o evento se a resposta for "s"
-    if (resposta.equalsIgnoreCase("s")) {
-        EventosCriados.remove(eventoSelecionado);
-        System.out.println("Evento apagado com sucesso!");
-    } else {
-        System.out.println("Operação cancelada.");
-    }
+    if (null == resposta) {
+        System.out.println("Rsposta inválida. Por favor, insira 's' ou 'n'.");
+    } else // Apaga o evento se a resposta for "s"
+        switch (resposta) {
+            case SIM -> {
+                if (EventosCriados.contains(eventoSelecionado)){
+                    EventosCriados.remove(eventoSelecionado);
+                    System.out.println("Evento apagado com sucesso!");
+                } else {
+                    System.out.println("Evento não encontrado.");
+                    
+                }
+        }
+            case NAO -> {
+                System.out.println("Operação cancelada.");
+                menu3.nextLine();
+        }
+            default -> System.out.println("Rsposta inválida. Por favor, insira 's' ou 'n'.");
+        }
+    
+    // mostrar lista de eventos que restam
+    System.out.println("Eventos restantes: " + EventosCriados);
+    imprimeMenuGerirEventos();
 }
     
     private static void imprimeMenuPromotor(){
@@ -226,11 +279,18 @@ public class PromotorMenu3 {
     private static void imprimeMenuGerirEventos(){
         System.out.print("|==   Sistema Arena-eSpace  ==|\n");
         System.out.print("|    3. Vizualizar Reservas   |\n");   
-        System.out.print("|    4. Editar Reservas       |\n");
-        System.out.print("|    5. Remover Eventos       |\n");
-        System.out.print("|          0.  Sair           |\n");
+        System.out.print("|      4. Editar Reservas     |\n");
+        System.out.print("|      5. Remover Eventos     |\n");
+        System.out.print("|       6. Menu Anterior      |\n");
         System.out.print("|-----------------------------|\n");
         System.out.print("Digite a opção:");
+    }
+    
+    private OpcaoMenu3 mostrarMenuEDevolverOpcaoSelecionada(){ /*Método criado para mostrar o menu e devolver a opção selecionada, privado e só pode ser acessado pela própria classe*/
+        imprimeMenuGerirEventos();
+        int opcao = menu3.nextInt();
+        menu3.nextLine();
+        return OpcaoMenu3.getFromCodigo(opcao);
     }
     
     public enum Resposta {

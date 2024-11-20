@@ -74,7 +74,7 @@ public class Menu_1 {
                 if (utilizador.getPrivilegio().equals("admin")) {
                     new AdminMenu2().executa(); // chama o menu do admin
                 } else {
-                    new Menu3().show(); // chama o menu do promotor
+                    new PromotorMenu3().executa; // chama o menu do promotor
                 }
                 return; // Sai do método após login bem-sucedido
             
