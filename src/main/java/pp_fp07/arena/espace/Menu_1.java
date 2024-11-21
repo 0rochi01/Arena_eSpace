@@ -50,41 +50,41 @@ public class Menu_1 {
 
       }
     
-    private static void loginDoUtilizador(Scanner menu, List<Utilizador> utilizadorList) {
-    // Método estático que não retorna nada, criado para login do utilizador
-    System.out.println("Nome de Utilizador: ");
-    String nomeDeUtilizador = menu.nextLine();
-    
-    System.out.println("Password: ");
-    String password = menu.nextLine();
+    private void loginDoUtilizador(Scanner menu, List<Utilizador> utilizadorList) {
+        System.out.println("Nome de Utilizador: ");
+        String nomeDeUtilizador = menu.nextLine();
+        
+        System.out.println("Password: ");
+        String password = menu.nextLine();
 
-    // Verifica se a lista de utilizadores está vazia
-    if (utilizadorList.isEmpty()) {
-        System.out.println("Não existem utilizadores cadastrados.");
-        return; // Retorna para evitar continuar o processo de login
-    }
+        // Verifica se a lista de utilizadores está vazia
+        if (utilizadorList.isEmpty()) {
+            System.out.println("Não existem utilizadores cadastrados.");
+            return;
+        }
 
-    // Itera sobre a lista de utilizadores
-    for (Utilizador utilizador : utilizadorList) {
-        if (utilizador.getNomeDeUtilizador().equals(nomeDeUtilizador) && utilizador.getPassword().equals(password)) {
-            // Se o utilizador for um Promotor
-            Promotor promotorLogado = (Promotor) utilizador; // Faz o cast para Promotor
-            System.out.println("Login realizado com sucesso!");
+        // Itera sobre a lista de utilizadores
+        for (Utilizador utilizador : utilizadorList) {
+            if (utilizador.getNomeDeUtilizador().equals(nomeDeUtilizador) && utilizador.getPassword().equals(password)) {
+                System.out.println("Login realizado com sucesso!");
 
+                // Verifica o privilégio do utilizador
                 if (utilizador.getPrivilegio().equals("admin")) {
-                    new AdminMenu2().executa(); // chama o menu do admin
+                    // Chama o menu do admin
+                    AdminMenu2 adminMenu = new AdminMenu2(menu, utilizadorList, this); // Passa a referência do Menu_1
+                    adminMenu.executa2();
+                } else if (utilizador instanceof Promotor) {
+                    Promotor promotorLogado = (Promotor) utilizador;
+                    PromotorMenu3 menuPromotor = new PromotorMenu3(menu);
+                    menuPromotor.executa3(); // Chama o menu do promotor
                 } else {
-                    new PromotorMenu3(menu).executa3(); // chama o menu do promotor
+                    System.out.println("O utilizador não tem privilégios adequados.");
                 }
                 return; // Sai do método após login bem-sucedido
-            
-        } else {
-                System.out.println("O utilizador não é um promotor.");
-                return; // Sai do método se não for um promotor
             }
-    }
-    System.out.println("Credenciais Inválidas!");
-} 
+        }
+        System.out.println("Credenciais Inválidas!");
+    } 
     
     private Utilizador cadastroDeUtilizador(){ /*Método criado para cadstrar utilizador, que só pode ser acessado pela própria classe e pelo pacote*/
         System.out.println("Digite o seu NomeCompleto: ");

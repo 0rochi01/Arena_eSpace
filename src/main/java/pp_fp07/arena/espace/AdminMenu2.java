@@ -12,13 +12,14 @@ public class AdminMenu2 {
 
     private final Scanner menu2;
     private final List<Utilizador> utilizadoresCadastrados; // Lista de utilizadores cadastrados
-
-    public AdminMenu2(Scanner menu2, List<Utilizador> utilizadoresCadastrados) {
+    private final Menu_1 menuPrincipal;
+    public AdminMenu2(Scanner menu2, List<Utilizador> utilizadoresCadastrados, Menu_1 menuPrincipal) {
         this.menu2 = menu2;
         this.utilizadoresCadastrados = utilizadoresCadastrados; // Inicializa a lista de utilizadores
+        this.menuPrincipal = menuPrincipal; // Inicializa a referencia ao Menu_1
     }
 
-    public void executa() {
+    public void executa2() {
         OpcaoMenu2 opcao;
         do {
             opcao = mostrarMenuEDevolverOpcaoSelected();
@@ -31,6 +32,7 @@ public class AdminMenu2 {
                     break;
                 case SAIR:
                     System.out.println("Saindo do menu.");
+                    menuPrincipal.executa();
                     break;
                 default:
                     System.out.println("Opção inválida, tente novamente.");
