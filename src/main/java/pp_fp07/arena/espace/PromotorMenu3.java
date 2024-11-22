@@ -317,5 +317,27 @@ public class PromotorMenu3 {
         }
     }
    
+    public enum Privilegio {
+    
+    ADMIN(1),
+    PROMOTOR(2);
+
+    private final int codigoPrivilegio;
+
+    Privilegio(int codigoPrivilegio) {
+        this.codigoPrivilegio = codigoPrivilegio;
+    }
+
+    public static Privilegio getFromCodigo(int codigoPrivilegio) {
+        for (Privilegio privilegio : values()) {
+            if (privilegio.codigoPrivilegio == codigoPrivilegio) {
+                return privilegio;
+            }
+        }
+        return null; // Retorna null se não encontrar
+    }
+    
+}
+
     
 }
