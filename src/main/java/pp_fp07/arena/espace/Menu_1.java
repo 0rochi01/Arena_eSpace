@@ -18,9 +18,11 @@ public class Menu_1 {
     public static Promotor promotorLogado; 
     private final Scanner menu;
     private final List<Utilizador> utilizadoresCadastrados = new ArrayList<>();  /* Eu crio uma lista de UtilizadoresCadastrados */
+    private PromotorMenu3 menuPromotor;
     
-    public Menu_1(Scanner menu, List<Utilizador> utilizadoresCadastrados) {
+    public Menu_1(Scanner menu, List<Utilizador> utilizadoresCadastrados, PromotorMenu3 menuPromotor) {
         this.menu = menu;
+        this.menuPromotor = menuPromotor;
     }
    
     public void executa() {
@@ -68,14 +70,9 @@ public class Menu_1 {
         } else {
             // Se as credenciais forem válidas, você pode parar o loop
             continuar = false; // Para sair do loop
-            System.out.println("Login bem-sucedido!");
+            
         }
-        // Se você quiser permitir uma opção para sair do loop
-            System.out.println("Deseja tentar novamente? (s/n)");
-            String resposta = menu.nextLine();
-            if (resposta.equalsIgnoreCase("n")) {
-                continuar = false; // Para sair do loop
-            }
+        
             
         // Itera sobre a lista de utilizadores
         for (Utilizador utilizador : utilizadorList) {
@@ -83,13 +80,13 @@ public class Menu_1 {
                 System.out.println("Login realizado com sucesso!");
 
                 // Verifica o privilégio do utilizador
-                if (utilizador.getPrivilegio().equals("admin")) {
+                if (utilizador.getPrivilegio().equalsIgnoreCase("admin")) {
                     // Chama o menu do admin
-                    AdminMenu2 adminMenu = new AdminMenu2(menu, utilizadorList, this); // Passa a referência do Menu_1
-                    adminMenu.executa2();
+                    AdminMenu2 adminMenu = new AdminMenu2(menu, utilizadorList, this); 
+                    adminMenu.executa2(); // Chama o menu do admin
                 } else if (utilizador instanceof Promotor) {
                     Promotor promotorLogado = (Promotor) utilizador;
-                    PromotorMenu3 menuPromotor = new PromotorMenu3(menu);
+                    PromotorMenu3 menuPromotor = new PromotorMenu3(menu, this);
                     menuPromotor.executa3(); // Chama o menu do promotor
                 } else {
                     System.out.println("O utilizador não tem privilégios adequados.");
@@ -116,25 +113,37 @@ public class Menu_1 {
             System.out.println("Digite a sua password: ");
             String password = menu.nextLine();
             
-            System.out.println("Privilegio (admin/promotor): ");
-            String Privilegio = menu.nextLine().toLowerCase();
+            System.out.println("Selecione um privilégio: ");
+            System.out.println("1. 'admin' ");
+            System.out.println("2. 'promotor' ");
             
-            if (!Privilegio.equals("admin") && !Privilegio.equals("promotor")){
-                System.out.println("Privilégio Inválido! Deve ser 'Admin' ou 'Promotor'.");
+            int opcaoPrivilegio;
+            
+            try {
+                opcaoPrivilegio = Integer.parseInt(menu.nextLine());
+            } catch (NumberFormatException e){
+                System.out.println("Opção inválida!! Digite o número da opção.");
                 return null;
             }
-            Utilizador utilizador = new Utilizador(NomeCompleto, NomeDeUtilizador, email, password, Privilegio);
-            if (Privilegio.equals("admin")){
-                utilizador = new Utilizador(NomeCompleto, NomeDeUtilizador, email, password, Privilegio);
-            } else {
-                utilizador = new Promotor(NomeCompleto, NomeDeUtilizador, email, password, Privilegio);
-            }
-
-            utilizadoresCadastrados.add(utilizador);
-            utilizador.imprimeDados();
             
-            /*return new Utilizador(NomeCompleto, NomeDeUtilizador, email, password, Privilegio);*/
-        return utilizador;
+            // Obtém a opção correspondente ao número digitado
+            Privilegio privilegio = Privilegio.getFromCodigo(opcaoPrivilegio);
+            if (privilegio == null || (privilegio != Privilegio.ADMIN && privilegio != Privilegio.PROMOTOR)){
+                System.out.println("Privilégio inválido!!");
+                return null;
+            }
+            
+            Utilizador utilizador;
+            if (privilegio == Privilegio.ADMIN){
+                utilizador = new Utilizador(NomeCompleto, NomeDeUtilizador, email, password, privilegio.name());
+            } else {
+                utilizador = new Promotor(NomeCompleto, NomeDeUtilizador, email, password, privilegio.name());
+            }
+            // Insere o utilizador na lista
+            utilizadoresCadastrados.add(utilizador);
+            // Exibe os dados do utilizador
+            utilizador.imprimeDados(); 
+            return utilizador;
     }
     
     private OpcaoMenu1 mostrarMenuEDevolverOpcaoSelected(){ /*Método criado para mostrar o menu e devolver a opção selecionada, privado e só pode ser acessado pela própria classe*/

@@ -20,7 +20,7 @@ public class ArenaESpace {
             // Cria a lista de utilizadores cadastrados
             List<Utilizador> utilizadoresCadastrados = new ArrayList<>();
             // Cria uma instância do Menu_1
-            Menu_1 menu = new Menu_1(scanner, utilizadoresCadastrados);
+            Menu_1 menu = new Menu_1(scanner, utilizadoresCadastrados,new PromotorMenu3(scanner, null));
             // Executa o menu principal
             menu.executa();
             // Fecha o scanner ao final da execução

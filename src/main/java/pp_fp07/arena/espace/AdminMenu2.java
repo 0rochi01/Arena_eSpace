@@ -20,7 +20,7 @@ public class AdminMenu2 {
     }
 
     public void executa2() {
-        System.out.println("Bem-vindo Promotor de Admin!");
+        System.out.println("Bem-vindo Administrador!");
         
         OpcaoMenu2 opcao;
         do {
@@ -80,7 +80,10 @@ public class AdminMenu2 {
     }
 
     private void removerPromotor() {
-        String nome = lerString("Digite o nome do promotor a ser removido: ");
+        if(utilizadoresCadastrados.isEmpty()){
+            System.out.println("Não existe promotores cadstrados.");
+        } else {
+            String nome = lerString("Digite o nome do promotor a ser removido: ");
         boolean encontrado = false;
 
         // Verifica se o promotor está na lista de utilizadores cadastrados
@@ -95,7 +98,9 @@ public class AdminMenu2 {
 
         if (!encontrado) {
             System.out.println("Promotor não encontrado.");
+            }
         }
+        
     }
 
     private OpcaoMenu2 mostrarMenuEDevolverOpcaoSelected() {

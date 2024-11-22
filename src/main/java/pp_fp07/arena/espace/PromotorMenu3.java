@@ -17,11 +17,12 @@ import static pp_fp07.arena.espace.Menu_1.promotorLogado;
  */
 public class PromotorMenu3 {
        
-    public PromotorMenu3(Scanner menu3) {
+    public PromotorMenu3(Scanner menu3, Menu_1 menuPrincipal) {
         this.menu3 = menu3;
+        this.menuPrincipal = menuPrincipal;
     }
     
-    
+    private final Menu_1 menuPrincipal;
     private final Scanner menu3;
     private final List<Eventos> EventosCriados = new ArrayList<>();
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -34,14 +35,14 @@ public class PromotorMenu3 {
         
         OpcaoMenu3 opcao = mostrarMenuEDevolverOpcaoSelecionada();
         
-        while (opcao != OpcaoMenu3.SAIR){  
+        do {
             switch (opcao){
                 case OpcaoMenu3.GERIREVENTOS:
                     imprimeMenuGerirEventos();
                     break;
                 case OpcaoMenu3.CRIAREVENTOS:
                     criarEventos();
-                    imprimeMenuPromotor();
+                    imprimeMenuGerirEventos();
                     break;
                 case OpcaoMenu3.VIZUALIZARRESERVAS:
                     vizualizarReservas();
@@ -60,14 +61,12 @@ public class PromotorMenu3 {
                     break;
                 case OpcaoMenu3.SAIR:
                     System.out.print("\nAté Logo!!"); /* O sistema envia uma mensagem de despedida */
-                     /* E fecha o menu, encerrando atividade */
+                    menuPrincipal.executa();/* E fecha o menu, encerrando atividade */
                 default:
                     System.out.println("Opção Inválida");
                 }
-
-            opcao = mostrarMenuEDevolverOpcaoSelecionada(); /* Eu mostro o menu e devolvo a opção selecionada */
-   
-        }
+        } while (opcao != OpcaoMenu3.SAIR);
+        
     }
     
     
@@ -288,7 +287,7 @@ public class PromotorMenu3 {
     }
     
     private OpcaoMenu3 mostrarMenuEDevolverOpcaoSelecionada(){ /*Método criado para mostrar o menu e devolver a opção selecionada, privado e só pode ser acessado pela própria classe*/
-        imprimeMenuGerirEventos();
+        imprimeMenuPromotor();
         int opcao = menu3.nextInt();
         menu3.nextLine();
         return OpcaoMenu3.getFromCodigo(opcao);
