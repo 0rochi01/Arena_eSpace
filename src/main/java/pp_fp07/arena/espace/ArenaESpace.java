@@ -14,12 +14,16 @@ import java.util.Scanner;
  */
 public class ArenaESpace {
     public static void main(String[] args) {
-        /*Crio o Scanner*/
-        Scanner menu = new Scanner (System.in);   /* Crio o Scanner(menu) */
-        Menu_1 menu1 = new Menu_1(menu);
-        
-        menu1.executa();
-        
+        // Cria a lista de utilizadores cadastrados
+        try ( // Cria o Scanner para entrada do usuário
+                Scanner scanner = new Scanner(System.in)) {
+            // Cria a lista de utilizadores cadastrados
+            List<Utilizador> utilizadoresCadastrados = new ArrayList<>();
+            // Cria uma instância do Menu_1
+            Menu_1 menu = new Menu_1(scanner, utilizadoresCadastrados);
+            // Executa o menu principal
+            menu.executa();
+            // Fecha o scanner ao final da execução
+        }
     }
-   
 }

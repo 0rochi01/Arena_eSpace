@@ -13,56 +13,70 @@ import java.util.Scanner;
  */
 public class Menu_1 {
     
-    public Menu_1(Scanner menu) {
-        this.menu = menu;
-    }
+    
     
     public static Promotor promotorLogado; 
     private final Scanner menu;
     private final List<Utilizador> utilizadoresCadastrados = new ArrayList<>();  /* Eu crio uma lista de UtilizadoresCadastrados */
     
+    public Menu_1(Scanner menu, List<Utilizador> utilizadoresCadastrados) {
+        this.menu = menu;
+    }
+   
+    public void executa() {
+    OpcaoMenu1 opcao = mostrarMenuEDevolverOpcaoSelected();  /* Eu mostro o menu e devolvo a opção selecionada */
     
-   
-    public void executa(){
-        OpcaoMenu1 opcao = mostrarMenuEDevolverOpcaoSelected();  /* Eu mostro o menu e devolvo a opção selecionada */
-        
-        while (opcao != OpcaoMenu1.SAIR){  /* Enquanto a opção for maior que zero e menor que três o looping é infinito */
-            switch (opcao){
-                case OpcaoMenu1.REGISTO:
-                    Utilizador utilizador = cadastroDeUtilizador(); /* Eu cadastro um Utilizador */
+    while (opcao != OpcaoMenu1.SAIR) {  /* Enquanto a opção for diferente de SAIR, o looping continua */
+        switch (opcao) {
+            case OpcaoMenu1.REGISTO:
+                Utilizador utilizador = cadastroDeUtilizador(); /* Eu cadastro um Utilizador */
+                if (utilizador != null) { // Verifica se o cadastro foi bem-sucedido
                     utilizadoresCadastrados.add(utilizador); /* Adiciono o utilizador na Lista */
-                    utilizador.imprimeDados(); /* E exibo seus dados cadastrados(exceto password). */
-                    break;
-                case OpcaoMenu1.SAIR:
-                    System.out.print("\nAté Logo!!"); /* O sistema envia uma mensagem de despedida */
-                    menu.close(); /* E fecha o menu, encerrando atividade */
-                    break;
-                case OpcaoMenu1.LOGIN:
-                    loginDoUtilizador(menu, utilizadoresCadastrados); /* Eu faço o login do utilizador existente na lista de utilizador*/
-                    break;
-                default:
-                    System.out.println("Opção Inválida");
+                    utilizador.imprimeDados(); /* E exibo seus dados cadastrados (exceto password). */
                 }
-
-            /*opcao = mostrarMenuEDevolverOpcaoSelected(); /* Eu mostro o menu e devolvo a opção selecionada */
-   
+                break;
+            case OpcaoMenu1.LOGIN:
+                loginDoUtilizador(menu, utilizadoresCadastrados); /* Eu faço o login do utilizador existente na lista de utilizador */
+                break;
+            default:
+                System.out.println("Opção Inválida");
         }
 
-      }
+        // Atualiza a opção para mostrar o menu novamente
+        opcao = mostrarMenuEDevolverOpcaoSelected(); /* Eu mostro o menu e devolvo a opção selecionada */
+    }
+
+    System.out.print("\nAté Logo!!"); /* O sistema envia uma mensagem de despedida */
+    menu.close(); /* E fecha o menu, encerrando atividade */
+}
     
     private void loginDoUtilizador(Scanner menu, List<Utilizador> utilizadorList) {
-        System.out.println("Nome de Utilizador: ");
+        
+        boolean continuar = true;
+        
+        while (continuar){
+            System.out.println("Nome de Utilizador: ");
         String nomeDeUtilizador = menu.nextLine();
         
         System.out.println("Password: ");
         String password = menu.nextLine();
 
         // Verifica se a lista de utilizadores está vazia
-        if (utilizadorList.isEmpty()) {
-            System.out.println("Não existem utilizadores cadastrados.");
-            return;
+        // Aqui você pode verificar se as credenciais são válidas
+        if (nomeDeUtilizador.isEmpty() || password.isEmpty()) {
+            System.out.println("Credenciais inválidas! Tente novamente.");
+        } else {
+            // Se as credenciais forem válidas, você pode parar o loop
+            continuar = false; // Para sair do loop
+            System.out.println("Login bem-sucedido!");
         }
-
+        // Se você quiser permitir uma opção para sair do loop
+            System.out.println("Deseja tentar novamente? (s/n)");
+            String resposta = menu.nextLine();
+            if (resposta.equalsIgnoreCase("n")) {
+                continuar = false; // Para sair do loop
+            }
+            
         // Itera sobre a lista de utilizadores
         for (Utilizador utilizador : utilizadorList) {
             if (utilizador.getNomeDeUtilizador().equals(nomeDeUtilizador) && utilizador.getPassword().equals(password)) {
@@ -84,6 +98,9 @@ public class Menu_1 {
             }
         }
         System.out.println("Credenciais Inválidas!");
+        }
+        
+        
     } 
     
     private Utilizador cadastroDeUtilizador(){ /*Método criado para cadstrar utilizador, que só pode ser acessado pela própria classe e pelo pacote*/
@@ -100,16 +117,24 @@ public class Menu_1 {
             String password = menu.nextLine();
             
             System.out.println("Privilegio (admin/promotor): ");
-            String Privilegio = menu.nextLine();
+            String Privilegio = menu.nextLine().toLowerCase();
             
             if (!Privilegio.equals("admin") && !Privilegio.equals("promotor")){
                 System.out.println("Privilégio Inválido! Deve ser 'Admin' ou 'Promotor'.");
+                return null;
             }
-            
-            utilizadoresCadastrados.add(new Utilizador(NomeCompleto, NomeDeUtilizador, email, password, Privilegio));
+            Utilizador utilizador = new Utilizador(NomeCompleto, NomeDeUtilizador, email, password, Privilegio);
+            if (Privilegio.equals("admin")){
+                utilizador = new Utilizador(NomeCompleto, NomeDeUtilizador, email, password, Privilegio);
+            } else {
+                utilizador = new Promotor(NomeCompleto, NomeDeUtilizador, email, password, Privilegio);
+            }
+
+            utilizadoresCadastrados.add(utilizador);
+            utilizador.imprimeDados();
             
             /*return new Utilizador(NomeCompleto, NomeDeUtilizador, email, password, Privilegio);*/
-        return null;
+        return utilizador;
     }
     
     private OpcaoMenu1 mostrarMenuEDevolverOpcaoSelected(){ /*Método criado para mostrar o menu e devolver a opção selecionada, privado e só pode ser acessado pela própria classe*/
@@ -127,5 +152,6 @@ public class Menu_1 {
         System.out.print("|-----------------------------|\n");
         System.out.print("Digite a opção:");
     }
+
         
 }

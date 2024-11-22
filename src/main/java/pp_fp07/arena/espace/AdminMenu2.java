@@ -20,6 +20,8 @@ public class AdminMenu2 {
     }
 
     public void executa2() {
+        System.out.println("Bem-vindo Promotor de Admin!");
+        
         OpcaoMenu2 opcao;
         do {
             opcao = mostrarMenuEDevolverOpcaoSelected();
@@ -78,7 +80,7 @@ public class AdminMenu2 {
     }
 
     private void removerPromotor() {
-        String nome = lerString("Digite o nome de utilizador do promotor a ser removido: ");
+        String nome = lerString("Digite o nome do promotor a ser removido: ");
         boolean encontrado = false;
 
         // Verifica se o promotor está na lista de utilizadores cadastrados
