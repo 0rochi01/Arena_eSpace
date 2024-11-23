@@ -6,6 +6,7 @@ package pp_fp07.arena.espace;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -32,98 +33,125 @@ public class PromotorMenu3 {
     
     public void executa3() {
         System.out.println("Bem-vindo Promotor de Eventos!");
-        
+
         OpcaoMenu3 opcao = mostrarMenuEDevolverOpcaoSelecionada();
-        
+
         do {
-            switch (opcao){
-                case OpcaoMenu3.GERIREVENTOS:
-                    imprimeMenuGerirEventos();
+            switch (opcao) {
+                case GERIREVENTOS:
+                    OpcaoGerirEventos op; // variavel declarada
+                    do {
+                        op = mostrarMenuEDevolverOpcaoSetada(); //// Atualiza a opção em cada iteração
+                        switch (op) {
+                            case VIZUALIZARRESERVAS:
+                                vizualizarReservas();
+                                break;
+                            case EDITARRESERVAS:
+                                editarReservas();
+                                break;
+                            case REMOVEREVENTOS:
+                                removerEvento();
+                                break;
+                            case MENUANTERIOR:
+                                // Retorna ao menu anterior
+                                break;
+                            case SAIR:
+                                System.out.print("\nAté Logo!!");
+                                menuPrincipal.executa();
+                                break;
+                            default:
+                                System.out.println("Opção Inválida");
+                                break;
+                        }
+                    } while (op != OpcaoGerirEventos.MENUANTERIOR);
                     break;
-                case OpcaoMenu3.CRIAREVENTOS:
+
+                case CRIAREVENTOS:
                     criarEventos();
-                    imprimeMenuGerirEventos();
                     break;
-                case OpcaoMenu3.VIZUALIZARRESERVAS:
-                    vizualizarReservas();
-                    imprimeMenuGerirEventos();
+
+                case SAIR:
+                    System.out.print("\nAté Logo!!");
+                    menuPrincipal.executa();
                     break;
-                case OpcaoMenu3.EDITARRESERVAS:
-                    editarReservas();
-                    imprimeMenuGerirEventos();
-                    break;
-                case OpcaoMenu3.REMOVEREVENTOS:
-                    removerEvento();
-                    imprimeMenuGerirEventos();
-                    break;
-                case OpcaoMenu3.MenuAnterior:
-                    imprimeMenuPromotor();
-                    break;
-                case OpcaoMenu3.SAIR:
-                    System.out.print("\nAté Logo!!"); /* O sistema envia uma mensagem de despedida */
-                    menuPrincipal.executa();/* E fecha o menu, encerrando atividade */
+
                 default:
                     System.out.println("Opção Inválida");
-                }
+                    break;
+            }
+            opcao = mostrarMenuEDevolverOpcaoSelecionada(); // Atualiza a opção para o próximo loop
         } while (opcao != OpcaoMenu3.SAIR);
-        
     }
     
-    
-    
-    
-            
-            
-    private void criarEventos(){
-        boolean aaa=true;
-        while(aaa){ // loop para permitir a criação de eventos
-            System.out.println("Digite título do Evento (ou 'sair' para encerrar):"); 
-            String titulo = menu3.nextLine(); // o utilizador insere o título e o sistema lê a próxima linha
         
-            
-            
-            System.out.println("Digite a Data e a Hora do seu evento (dd/MM/yyyy HH:mm)");
-            String dataHoraInput = menu3.nextLine(); // O utilizador insere data e hora
-           
-            if (!dataHoraInput.matches("\\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}")){ // Verificação do formato da data e hora
-                System.out.println("Formato de data e hora inválido. Tente novamente.");
-                continue; // // Retorna ao início do loop se a entrada for inválida 
+    private void criarEventos() {
+        boolean continuar = true;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        while (continuar) {
+            System.out.println("Digite o título do Evento:"); 
+            String titulo = menu3.nextLine();
+
+            LocalDateTime dataHora = null;
+            while (dataHora == null) {
+                System.out.println("Digite a Data e a Hora do seu evento (dd/MM/yyyy HH:mm):");
+                String dataHoraInput = menu3.nextLine();
+
+                try {
+                    dataHora = LocalDateTime.parse(dataHoraInput, formatter);
+                } catch (DateTimeParseException e) {
+                    System.out.println("Formato de data e hora inválido. Tente novamente.");
+                }
             }
-            
-            LocalDateTime dataHora = LocalDateTime.parse(dataHoraInput, formatter); // Converte a entrada para LocalDateTime
-            
-            System.out.println("Digite a Sala do Evento");
-            String sala = menu3.nextLine(); // O utilizador insere a sala
-            
-            System.out.println("Escolha a modalidade do seu Evento");
+
+            System.out.println("Digite a Sala do Evento:");
+            String sala = menu3.nextLine();
+
+            System.out.println("Escolha a modalidade do seu Evento:");
             String modalidade = menu3.nextLine();
-            
-            System.out.println("Digite um numero máximo de participantes:");
+
+            System.out.println("Digite um número máximo de participantes:");
             int numeroMaximoDeParticipantes = menu3.nextInt();
             menu3.nextLine(); // consome a nova linha
-            
-            System.out.println("Digite as condições para participarem do Evento");
+
+            System.out.println("Digite as condições para participação no Evento:");
             String condicoesInscricao = menu3.nextLine();
-            
-            // pega o contato(email) do promotor logado no sistema
-            
-            Eventos evento = new Eventos(titulo, dataHora, sala, promotorLogado.getNomeCompleto(), promotorLogado.getEmail(), condicoesInscricao, modalidade, numeroMaximoDeParticipantes);
-            EventosCriados.add(evento); //adiciona evento à lista
-            
+
+            // Cria o evento utilizando a variável promotorLogado
+            Eventos evento = new Eventos(
+                titulo,
+                dataHora,
+                sala,
+                condicoesInscricao,
+                modalidade,
+                numeroMaximoDeParticipantes,
+                Menu_1.promotorLogado.getNomeCompleto(),
+                Menu_1.promotorLogado.getEmail()
+            );
+
+            EventosCriados.add(evento);
+
             System.out.println("Evento criado com sucesso:");
-            System.out.println(evento.toString()); // Chama o to String da classe Evento
-            
-            // Pergunta se o utilizador quer criar outro evento
-            System.out.println("Deseja criar outro eventi) (s/n)");
-            String resposta = menu3.nextLine();
-            
-            if (resposta.equalsIgnoreCase("n")){
-                System.out.println("Até Logo!!");
-                break; // Encerra o loop
+            System.out.println(evento.toString());
+
+            // Pergunta se deseja criar outro evento
+            boolean respostaValida = false;
+            while (!respostaValida) {
+                System.out.println("Deseja criar outro evento? (s/n)");
+                String resposta = menu3.nextLine().trim().toLowerCase();
+
+                if (resposta.equals("s")) {
+                    continuar = true; // Permite criar outro evento
+                    respostaValida = true;
+                } else if (resposta.equals("n")) {
+                    System.out.println("Até Logo!!");
+                    continuar = false; // Encerra o loop
+                    respostaValida = true;
+                } else {
+                    System.out.println("Resposta inválida. Por favor, digite 's' para sim ou 'n' para não.");
+                }
             }
-                
-        } 
-       
+        }
     }
     
     private void vizualizarReservas(){
@@ -138,67 +166,72 @@ public class PromotorMenu3 {
     }
     
     private void editarReservas() {
-    if (EventosCriados.isEmpty()) {
-        System.out.println("Não existem eventos cadastrados para editar.");
-        return;
-    }
+        if (EventosCriados.isEmpty()) {
+            System.out.println("Não existem eventos cadastrados para editar.");
+            return;
+        }
 
-    // Exibir eventos existentes
-    System.out.println("Eventos cadastrados:");
-    for (int i = 0; i < EventosCriados.size(); i++) {
-        Eventos evento = EventosCriados.get(i);
-        System.out.println((i + 1) + ". " + evento.toString());
-    }
+        // Exibir eventos existentes
+        System.out.println("Eventos cadastrados:");
+        for (int i = 0; i < EventosCriados.size(); i++) {
+            Eventos evento = EventosCriados.get(i);
+            System.out.println((i + 1) + ". " + evento.toString());
+        }
 
-    // Solicitar ao usuário para escolher um evento para editar
-    System.out.println("Digite o número do evento que deseja editar:");
-    int eventoIndex = menu3.nextInt() - 1; // Ajusta para índice zero
-    menu3.nextLine(); // Consumir a nova linha
+        // Solicitar ao usuário para escolher um evento para editar
+        System.out.println("Digite o número do evento que deseja editar:");
+        int eventoIndex = menu3.nextInt() - 1; // Ajusta para índice zero
+        menu3.nextLine(); // Consumir a nova linha
 
-    if (eventoIndex < 0 || eventoIndex >= EventosCriados.size()) {
-        System.out.println("Número de evento inválido. Tente novamente.");
-        return;
-    }
+        if (eventoIndex < 0 || eventoIndex >= EventosCriados.size()) {
+            System.out.println("Número de evento inválido. Tente novamente.");
+            return;
+        }
 
-    Eventos eventoSelecionado = EventosCriados.get(eventoIndex);
+        Eventos eventoSelecionado = EventosCriados.get(eventoIndex);
 
-    // Editar título
-    System.out.println("Título atual: " + eventoSelecionado.getTitulo());
-    System.out.println("Digite o novo título (ou pressione Enter para manter o atual):");
-    String novoTitulo = menu3.nextLine();
-    if (!novoTitulo.isEmpty()) {
-        eventoSelecionado.setTitulo(novoTitulo);
-    }
+        // Editar título
+        String novoTitulo = solicitarEntrada("Título atual: " + eventoSelecionado.getTitulo() + 
+                                            "\nDigite o novo título (ou pressione Enter para manter o atual):");
+        if (!novoTitulo.isEmpty()) {
+            eventoSelecionado.setTitulo(novoTitulo);
+        }
 
-    // Editar data e hora
-    System.out.println("Data e Hora atual: " + eventoSelecionado.getDataHora().format(formatter));
-    System.out.println("Digite a nova data e hora (dd/MM/yyyy HH:mm) ou pressione Enter para manter a atual:");
-    String novaDataHoraInput = menu3.nextLine();
-    if (!novaDataHoraInput.isEmpty()) {
-        if (!novaDataHoraInput.matches("\\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}")) {
-            System.out.println("Formato de data e hora inválido. Tente novamente.");
-        } else {
-            try {
-                LocalDateTime novaDataHora = LocalDateTime.parse(novaDataHoraInput, formatter);
-                eventoSelecionado.setDataHora(novaDataHora);
-            } catch (Exception e) {
-                System.out.println("Erro ao processar a nova data e hora. Tente novamente.");
+        // Editar data e hora
+        String novaDataHoraInput = solicitarEntrada("Data e Hora atual: " + eventoSelecionado.getDataHora().format(formatter) + 
+                                                    "\nDigite a nova data e hora (dd/MM/yyyy HH:mm) ou pressione Enter para manter a atual:");
+        if (!novaDataHoraInput.isEmpty()) {
+            if (validarDataHora(novaDataHoraInput)) {
+                try {
+                    LocalDateTime novaDataHora = LocalDateTime.parse(novaDataHoraInput, formatter);
+                    eventoSelecionado.setDataHora(novaDataHora);
+                } catch (Exception e) {
+                    System.out.println("Erro ao processar a nova data e hora. Tente novamente.");
+                }
+            } else {
+                System.out.println("Formato de data e hora inválido. Tente novamente.");
             }
         }
+
+        // Editar sala
+        String novaSala = solicitarEntrada("Sala atual: " + eventoSelecionado.getSala() + 
+                                           "\nDigite a nova sala (ou pressione Enter para manter a atual):");
+        if (!novaSala.isEmpty()) {
+            eventoSelecionado.setSala(novaSala);
+        }
+
+        // Exibir mensagem de sucesso
+        System.out.println("Evento editado com sucesso:");
+        System.out.println(eventoSelecionado.toString());
     }
 
-    // Editar sala
-    System.out.println("Sala atual: " + eventoSelecionado.getSala());
-    System.out.println("Digite a nova sala (ou pressione Enter para manter a atual):");
-    String novaSala = menu3.nextLine();
-    if (!novaSala.isEmpty()) {
-        eventoSelecionado.setSala(novaSala);
+    private String solicitarEntrada(String mensagem) {
+        System.out.println(mensagem);
+        return menu3.nextLine();
     }
 
-    // Exibir mensagem de sucesso
-    System.out.println("Evento editado com sucesso:");
-    System.out.println(eventoSelecionado.toString());
-    imprimeMenuGerirEventos();
+    private boolean validarDataHora(String dataHoraInput) {
+        return dataHoraInput.matches("\\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}");
     }
     
     private void removerEvento() {
@@ -262,7 +295,6 @@ public class PromotorMenu3 {
     
     // mostrar lista de eventos que restam
     System.out.println("Eventos restantes: " + EventosCriados);
-    imprimeMenuGerirEventos();
 }
     
     private static void imprimeMenuPromotor(){
@@ -291,6 +323,13 @@ public class PromotorMenu3 {
         int opcao = menu3.nextInt();
         menu3.nextLine();
         return OpcaoMenu3.getFromCodigo(opcao);
+    }
+    
+    private OpcaoGerirEventos mostrarMenuEDevolverOpcaoSetada(){ /*Método criado para mostrar o menu e devolver a opção selecionada, privado e só pode ser acessado pela própria classe*/
+        imprimeMenuGerirEventos();
+        int opcao = menu3.nextInt();
+        menu3.nextLine();
+        return OpcaoGerirEventos.getFromCodigo(opcao);
     }
     
     public enum Resposta {
@@ -335,9 +374,65 @@ public class PromotorMenu3 {
             }
         }
         return null; // Retorna null se não encontrar
+        }
+    
     }
     
-}
+    public enum OpcaoMenu3 {
+    GERIREVENTOS(1),
+    
+    CRIAREVENTOS(2),
+    
+    SAIR(0);
+    
+    
+    private final int codigoMenu3;
+    
+        OpcaoMenu3(int codigoMenu3){
+            this.codigoMenu3 = codigoMenu3;
+        }
 
+        public static OpcaoMenu3 getFromCodigo(int codigoMenu){
+            OpcaoMenu3[] todasAsOpcoes = OpcaoMenu3.values();
+            for (OpcaoMenu3 opcao : todasAsOpcoes){
+                if (opcao.codigoMenu3 == codigoMenu){
+                    return opcao;
+                }
+            }
+
+            return null;
+        }   
+    }
+
+    public enum OpcaoGerirEventos {
+        
+        VIZUALIZARRESERVAS(3),
+
+        EDITARRESERVAS(4),
+
+        REMOVEREVENTOS(5),
+
+        MENUANTERIOR(6),
+
+        SAIR(0);
+    
+    
+    private final int codigoGerirEventos;
+    
+        OpcaoGerirEventos(int codigoGerirEventos){
+            this.codigoGerirEventos = codigoGerirEventos;
+        }
+
+        public static OpcaoGerirEventos getFromCodigo(int codigoGerirEventos){
+            OpcaoGerirEventos[] todasAsOpcoes = OpcaoGerirEventos.values();
+            for (OpcaoGerirEventos opcao : todasAsOpcoes){
+                if (opcao.codigoGerirEventos == codigoGerirEventos){
+                    return opcao;
+                }
+            }
+
+            return null;
+        }   
+    }
     
 }

@@ -4,9 +4,12 @@
  */
 package pp_fp07.arena.espace;
 
+import java.util.regex.Pattern;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import pp_fp07.arena.espace.PromotorMenu3.Privilegio;
 /**
  *
  * @author RyanS
@@ -53,104 +56,207 @@ public class Menu_1 {
 }
     
     private void loginDoUtilizador(Scanner menu, List<Utilizador> utilizadorList) {
-        
         boolean continuar = true;
-        
-        while (continuar){
-            System.out.println("Nome de Utilizador: ");
-        String nomeDeUtilizador = menu.nextLine();
-        
-        System.out.println("Password: ");
-        String password = menu.nextLine();
+        int tentativas = 0; // Contador de tentativas
 
-        // Verifica se a lista de utilizadores está vazia
-        // Aqui você pode verificar se as credenciais são válidas
-        if (nomeDeUtilizador.isEmpty() || password.isEmpty()) {
-            System.out.println("Credenciais inválidas! Tente novamente.");
-        } else {
-            // Se as credenciais forem válidas, você pode parar o loop
-            continuar = false; // Para sair do loop
-            
-        }
-        
-            
-        // Itera sobre a lista de utilizadores
-        for (Utilizador utilizador : utilizadorList) {
-            if (utilizador.getNomeDeUtilizador().equals(nomeDeUtilizador) && utilizador.getPassword().equals(password)) {
-                System.out.println("Login realizado com sucesso!");
+        while (continuar) {
+            System.out.print("Nome de Utilizador: ");
+            String nomeDeUtilizador = menu.nextLine();
 
-                // Verifica o privilégio do utilizador
-                if (utilizador.getPrivilegio().equalsIgnoreCase("admin")) {
-                    // Chama o menu do admin
-                    AdminMenu2 adminMenu = new AdminMenu2(menu, utilizadorList, this); 
-                    adminMenu.executa2(); // Chama o menu do admin
-                } else if (utilizador instanceof Promotor) {
-                    Promotor promotorLogado = (Promotor) utilizador;
-                    PromotorMenu3 menuPromotor = new PromotorMenu3(menu, this);
-                    menuPromotor.executa3(); // Chama o menu do promotor
-                } else {
-                    System.out.println("O utilizador não tem privilégios adequados.");
+            System.out.print("Password: ");
+            String password = menu.nextLine();
+
+            // Verifica se as credenciais são válidas
+            if (nomeDeUtilizador.isEmpty() || password.isEmpty()) {
+                System.out.println("Credenciais inválidas! Tente novamente.");
+                tentativas++;
+                continue; // Volta para o início do loop
+            }
+
+            // Itera sobre a lista de utilizadores
+            for (Utilizador utilizador : utilizadorList) {
+                if (utilizador.getNomeDeUtilizador().equals(nomeDeUtilizador) && utilizador.getPassword().equals(password)) {
+                    System.out.println("Login realizado com sucesso!");
+
+                    String tipoUtilizador;
+
+                    // Verifica o privilégio do utilizador
+                    if (utilizador instanceof Promotor promotor) {
+                        tipoUtilizador = "promotor";
+                        Menu_1.promotorLogado = promotor; // Atribui o promotor logado à variável da classe
+                    } else if (utilizador.getPrivilegio().equalsIgnoreCase("admin")) {
+                        tipoUtilizador = "admin";
+                    } else {
+                        tipoUtilizador = "sem_privilegios";
+                    }
+
+                    // Usando switch-case para determinar a ação a ser tomada
+                    switch (tipoUtilizador) {
+                        case "promotor" -> {
+                            PromotorMenu3 menuPromotor = new PromotorMenu3(menu, this);
+                            menuPromotor.executa3(); // Chama o menu do promotor
+                        }
+                        case "admin" -> {
+                            AdminMenu2 adminMenu = new AdminMenu2(menu, utilizadorList, this);
+                            adminMenu.executa2(); // Chama o menu do admin
+                        }
+                        case "sem_privilegios" -> System.out.println("O utilizador não tem privilégios adequados.");
+                    }
+                    return; // Sai do método após login bem-sucedido
                 }
-                return; // Sai do método após login bem-sucedido
+            }
+
+            // Se as credenciais não forem válidas
+            System.out.println("Credenciais Inválidas! Tente novamente.");
+            tentativas++;
+
+            // Limite de tentativas
+            if (tentativas >= 2) {
+                System.out.println("Excedeu o número máximo de tentativas. Retornando ao menu principal....");
+                return; // Retorna ao menu principal
             }
         }
-        System.out.println("Credenciais Inválidas!");
-        }
-        
-        
     } 
     
-    private Utilizador cadastroDeUtilizador(){ /*Método criado para cadstrar utilizador, que só pode ser acessado pela própria classe e pelo pacote*/
-        System.out.println("Digite o seu NomeCompleto: ");
-            String NomeCompleto = menu.nextLine();
-            
-            System.out.println("Digite o seu NomeDeUtilizador: ");
-            String NomeDeUtilizador = menu.nextLine();
-        
-            System.out.println("Digite o seu email: ");
-            String email = menu.nextLine();
-            
-            System.out.println("Digite a sua password: ");
-            String password = menu.nextLine();
-            
-            System.out.println("Selecione um privilégio: ");
-            System.out.println("1. 'admin' ");
-            System.out.println("2. 'promotor' ");
-            
-            int opcaoPrivilegio;
-            
-            try {
-                opcaoPrivilegio = Integer.parseInt(menu.nextLine());
-            } catch (NumberFormatException e){
-                System.out.println("Opção inválida!! Digite o número da opção.");
-                return null;
-            }
-            
-            // Obtém a opção correspondente ao número digitado
-            Privilegio privilegio = Privilegio.getFromCodigo(opcaoPrivilegio);
-            if (privilegio == null || (privilegio != Privilegio.ADMIN && privilegio != Privilegio.PROMOTOR)){
-                System.out.println("Privilégio inválido!!");
-                return null;
-            }
-            
-            Utilizador utilizador;
-            if (privilegio == Privilegio.ADMIN){
-                utilizador = new Utilizador(NomeCompleto, NomeDeUtilizador, email, password, privilegio.name());
+
+    private Utilizador cadastroDeUtilizador() {
+        System.out.println("Digite o seu Nome Completo: ");
+        String nomeCompleto = menu.nextLine();
+
+        String nomeDeUtilizador;
+        while (true) {
+            System.out.println("Digite o seu Nome de Utilizador: ");
+            nomeDeUtilizador = menu.nextLine();
+
+            // Verifica se o nome de utilizador já existe
+            if (isNomeDeUtilizadorUnico(nomeDeUtilizador)) {
+                break; // Sai do loop se o nome de utilizador for único
             } else {
-                utilizador = new Promotor(NomeCompleto, NomeDeUtilizador, email, password, privilegio.name());
+                System.out.println("Nome de utilizador já existe! Por favor, escolha outro.");
             }
-            // Insere o utilizador na lista
-            utilizadoresCadastrados.add(utilizador);
-            // Exibe os dados do utilizador
-            utilizador.imprimeDados(); 
-            return utilizador;
+        }
+
+        String email;
+        while (true) {
+            System.out.println("Digite o seu email: ");
+            email = menu.nextLine();
+
+            // Valida o formato do email
+            if (isEmailValido(email)) {
+                break; // Sai do loop se o email for válido
+            } else {
+                System.out.println("Email inválido! Por favor, digite um email válido.");
+            }
+        }
+
+        System.out.println("Digite a sua password: ");
+        String password = menu.nextLine();
+
+        System.out.println("Selecione um privilégio: ");
+        System.out.println("1. 'admin' ");
+        System.out.println("2. 'promotor' ");
+
+        int opcaoPrivilegio;
+
+        try {
+            opcaoPrivilegio = Integer.parseInt(menu.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Opção inválida!! Digite o número da opção.");
+            return null;
+        }
+
+        // Obtém a opção correspondente ao número digitado
+        Privilegio privilegio = Privilegio.getFromCodigo(opcaoPrivilegio);
+        if (privilegio == null || (privilegio != Privilegio.ADMIN && privilegio != Privilegio.PROMOTOR)) {
+            System.out.println("Privilégio inválido!!");
+            return null;
+        }
+
+        Utilizador utilizador;
+        if (privilegio == Privilegio.ADMIN) {
+            utilizador = new Utilizador(nomeCompleto, nomeDeUtilizador, email, password, privilegio.name());
+        } else {
+            utilizador = new Promotor(nomeCompleto, nomeDeUtilizador, email, password, privilegio.name());
+        }
+
+        // Insere o utilizador na lista
+        utilizadoresCadastrados.add(utilizador);
+        // Exibe os dados do utilizador
+        return utilizador;
+    }
+
+    // Método para verificar se o nome de utilizador é único
+    private boolean isNomeDeUtilizadorUnico(String nomeDeUtilizador) {
+        for (Utilizador utilizador : utilizadoresCadastrados) {
+            if (utilizador.getNomeDeUtilizador().equalsIgnoreCase(nomeDeUtilizador)) {
+                return false; // Nome de utilizador já existe
+            }
+        }
+        return true; // Nome de utilizador é único
+    }
+
+    // Método para validar o formato do email
+    private boolean isEmailValido(String email) {
+        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(email).matches();
     }
     
-    private OpcaoMenu1 mostrarMenuEDevolverOpcaoSelected(){ /*Método criado para mostrar o menu e devolver a opção selecionada, privado e só pode ser acessado pela própria classe*/
-        imprimeMenuPrincipal();
-        int opcao = menu.nextInt();
-        menu.nextLine();
-        return OpcaoMenu1.getFromCodigo(opcao);
+    public enum OpcaoMenu1 {
+    
+    LOGIN(1),
+    
+    REGISTO(2),
+    
+    SAIR(0);
+    
+    
+    private final int codigoMenu1;
+    
+    OpcaoMenu1(int codigoMenu1){
+        this.codigoMenu1 = codigoMenu1;
+    }
+    
+    public static OpcaoMenu1 getFromCodigo(int codigoMenu){
+        OpcaoMenu1[] todasAsOpcoes = OpcaoMenu1.values();
+        for (OpcaoMenu1 opcao : todasAsOpcoes){
+            if (opcao.codigoMenu1 == codigoMenu){
+                return opcao;
+            }
+        }
+        
+        return null;
+        }
+    }
+    
+    private OpcaoMenu1 mostrarMenuEDevolverOpcaoSelected() {
+        /* Método criado para mostrar o menu e devolver a opção selecionada,
+           privado e só pode ser acessado pela própria classe */
+
+        OpcaoMenu1 opcaoSelecionada = null; // Inicializa a variável para armazenar a opção selecionada
+        boolean entradaValida = false; // Flag para controlar a validade da entrada
+
+        while (!entradaValida) { // Loop até que uma entrada válida seja recebida
+            imprimeMenuPrincipal(); // Exibe o menu ao usuário
+
+            try {
+                int opcao = menu.nextInt(); // Lê a opção do usuário
+                menu.nextLine(); // Limpa o buffer
+
+                opcaoSelecionada = OpcaoMenu1.getFromCodigo(opcao); // Tenta converter a opção
+
+                if (opcaoSelecionada != null) {
+                    entradaValida = true; // Se a opção é válida, sai do loop
+                } else {
+                    System.out.println("Opção inválida. Tente novamente."); // Mensagem de erro para opção inválida
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Por favor, insira um número válido."); // Mensagem de erro para entrada não numérica
+                menu.nextLine(); // Limpa o buffer para evitar loop infinito
+            }
+        }
+
+        return opcaoSelecionada; // Retorna a opção válida
     }
     
     private static void imprimeMenuPrincipal() { /*Método estático que não retorna nada, criado para o sistema imprimir o menu principal, a classe não precisa ser instanciada para chamar este método*/
@@ -161,6 +267,7 @@ public class Menu_1 {
         System.out.print("|-----------------------------|\n");
         System.out.print("Digite a opção:");
     }
-
-        
+    
+    
+    
 }
